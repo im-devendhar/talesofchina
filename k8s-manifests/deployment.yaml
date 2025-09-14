@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: talesofchina-deployment
+  namespace: talesofchina
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: talesofchina
+  template:
+    metadata:
+      labels:
+        app: talesofchina
+    spec:
+      containers:
+      - name: talesofchina
+        image: your-dockerhub-username/talesofchina:latest
+        ports:
+        - containerPort: 80
