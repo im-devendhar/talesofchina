@@ -9,12 +9,16 @@ RUN rm -rf ./*
 
 # Copy your static website files into the container
 COPY index.html ./
-# If you have other files like CSS, JS, images, copy them too
+# Uncomment and copy additional directories if needed
 # COPY css/ ./css/
 # COPY js/ ./js/
 # COPY images/ ./images/
 
+# Copy custom Nginx configuration if you have one
+# COPY nginx.conf /etc/nginx/nginx.conf
+
 # Expose port 80 for HTTP traffic
 EXPOSE 80
 
-# Nginx automatically serves /usr/share/nginx/html
+# Use the default Nginx entrypoint
+CMD ["nginx", "-g", "daemon off;"]
