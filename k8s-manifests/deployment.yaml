@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: talesofchina-deployment
   namespace: talesofchina
+  labels:
+    app: talesofchina
 spec:
   replicas: 2
   selector:
@@ -15,6 +17,14 @@ spec:
     spec:
       containers:
       - name: talesofchina
-        image: your-dockerhub-username/talesofchina:latest
+        image: devenops641/talesofchina:latest
+        imagePullPolicy: Always   # ensures the latest image is pulled
         ports:
         - containerPort: 80
+        resources:               # optional but recommended
+          limits:
+            cpu: "500m"
+            memory: "256Mi"
+          requests:
+            cpu: "250m"
+            memory: "128Mi"
