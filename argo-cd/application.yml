@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default 
   source:
-    repoURL: 
+    repoURL: https://github.com/im-devendhar/talesofchina
     targetRevision: main
     path: k8-manifests
   destination:
