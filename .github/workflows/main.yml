@@ -4,11 +4,19 @@ on:
   push:
     branches:
        - main
+env:
+  
 
 jobs:
    build-and-deploy:
       runs-on: self-hosted
-             
+
+      steps:
+         - name: Checkout source code from github repository
+           uses: actions/checkout@v4
+
+         - name: build the container image
+           
   
     
 
