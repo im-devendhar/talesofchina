@@ -1,2 +1,14 @@
 name: Workflow to deploy container images in kubernetes clusters using Argo CD
 
+on:
+  push:
+    branches:
+       - main
+
+jobs:
+   build-and-deploy:
+             runs-on: self-hosted
+             
+  
+    
+
