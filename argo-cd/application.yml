@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: application
+metadata:
+   name: talesofchina
+   namespace: argocd
+spec:
+  project: default 
+  source:
+    repoURL: 
+    targetRevision: main
+    path: k8-manifests
+  destination:
+    server: http://kubernetes.default.svc
+    namespace: talesofchina
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+     - CreateNamespace=true
+  
