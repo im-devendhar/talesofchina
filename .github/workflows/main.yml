@@ -3,49 +3,40 @@ name: Workflow to deploy container images in kubernetes clusters using Argo CD
 on:
   push:
     branches:
-       - main
+      - main
+
 env:
   APP_DIR: app
   DOCKER_IMAGE: devenops641/tales-of-china
 
 jobs:
-   build-and-deploy:
-      runs-on: self-hosted
+  build-and-deploy:
+    runs-on: self-hosted
 
-      steps:
-         - name: Checkout source code from github repository
-           uses: actions/checkout@v4
-          
-         - name: Configure AWS Credentials
-           uses: aws-actions/configure-aws-credentials@v4
-           with:
-               aws-access-key-id: ${{secrets.AWS_ACCESS_KEY_ID}}
-               aws-secret-access-key: ${{secrets.AWS_SECRET_ACCESS_KEY}}
-               aws-region: us-east-1
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
 
-         - name: build the docker image using Dockerfile
-           run: | 
-                 cd $APP_DIR
-                 docker build -t $DOCKER_IMAGE:${{github.sha}} .
-                 docker tag $DOCKER_IMAGE:${{gihtub.sha}} $DOCKER_IMAGE:latest
-                 
-         - name: login to docker image
-           uses: docker/login-action@v3
-           with:
-             username: ${{secrets.DOCKER_USERNAME}}
-             password: ${{secrets.DOCKER_PASSWORD}}
+      - name: Build Docker Image
+        run: |
+          cd $APP_DIR
+          docker build -t $DOCKER_IMAGE:${{ github.sha }} .
+          docker tag $DOCKER_IMAGE:${{ github.sha }} $DOCKER_IMAGE:latest
 
-         - name: pushing the docker image to dockerhub
-           run: |
-                 docker push $DOCKER_IMAGE:${{github.sha}}
-                 docker push $DOCKER_IMAGE:latest
-          
-           
-                 
-                 
-               
-           
-  
-    
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Push Docker Image
+        run: |
+          docker push $DOCKER_IMAGE:${{ github.sha }}
+          docker push $DOCKER_IMAGE:latest
