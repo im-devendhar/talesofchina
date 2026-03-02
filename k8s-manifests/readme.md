@@ -4,8 +4,6 @@ This explains both:
 *   **kubectl installation (one‑time)**
 *   **AWS Load Balancer Controller manual installation (one‑time)**
 
-Everything is written in a clean README style.
-
 ***
 
 #  **Installing kubectl and AWS Load Balancer Controller (One-Time Setup)**
@@ -153,4 +151,5 @@ After completing the above steps, your cluster is fully ready for:
 *   GitHub Actions GitOps pipeline
 
 ***
+
 
