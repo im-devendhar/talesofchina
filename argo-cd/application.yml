@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/im-devendhar/talesofchina.git
     targetRevision: main
-    path: k8-manifests
+    path: k8s-manifests
   destination:
     server: http://kubernetes.default.svc
     namespace: talesofchina
