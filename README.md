@@ -316,16 +316,27 @@ This ensures:
 # Complete Workflow Summary
 
 Step 1: EC2 instance created
+
 Step 2: Terraform written for infrastructure
+
 Step 3: GitHub Actions pipeline created
+
 Step 4: Kubernetes manifests written
+
 Step 5: Terraform applied → Infrastructure built
+
 Step 6: AWS Load Balancer Controller installed
+
 Step 7: Argo CD installed and UI accessed
+
 Step 8: Application deployed using GitOps
+
 Step 9: Code modified and pushed
+
 Step 10: GitHub Actions updated image
+
 Step 11: Argo CD auto-synced
+
 Step 12: Application updated successfully
 
 ---
