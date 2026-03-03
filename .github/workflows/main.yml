@@ -58,7 +58,7 @@ jobs:
           IMAGE_TAG="${GITHUB_RUN_NUMBER}"   # define before use
 
           
-          sed -i "s/replaceImageTag/${iMAGE_TAG}/g" k8s-manifests/deployment.yaml
+          sed -i "s/replaceImageTag/${IMAGE_TAG}/g" k8s-manifests/deployment.yaml
 
           git add k8s-manifests/deployment.yaml
           if ! git diff --cached --quiet; then
