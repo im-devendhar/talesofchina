@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: talesofchina
-        image: devenops641/tales-of-china:${GITHUB_RUN_NUMBER}
+        image: devenops641/tales-of-china:replaceImageTag
         imagePullPolicy: Always   # ensures the latest image is pulled
         ports:
         - containerPort: 80
