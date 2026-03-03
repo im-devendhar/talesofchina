@@ -50,3 +50,4 @@ jobs:
             git add talesofchina/k8s-manifests/deployment.yaml
             git commit -m "Update deployment image to version ${BUILD_NUMBER}" || echo "No changes to commit"
             git push https://${{ github.actor }}:${{ secrets.TOKEN }}@github.com/${{ github.repository }} HEAD:main
+   
