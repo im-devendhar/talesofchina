@@ -109,8 +109,7 @@ eksctl create iamserviceaccount \
 ### **Step 5: Install CRDs**
 
 ```bash
-kubectl apply -k \
-"https://github.com/aws/eks-charts/stable/aws-load-balancer-controller//crds?ref=master"
+kubectl apply -f https://raw.githubusercontent.com/aws/eks-charts/master/stable/aws-load-balancer-controller/crds/crds.yaml
 ```
 
 ### **Step 6: Install AWS Load Balancer Controller using Helm**
@@ -176,6 +175,7 @@ After completing the above steps, your cluster is fully ready for:
 *   GitHub Actions GitOps pipeline
 
 ***
+
 
 
 
