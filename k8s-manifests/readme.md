@@ -97,10 +97,11 @@ Copy the **Policy ARN** from the output.
 
 ```bash
 eksctl create iamserviceaccount \
-  --cluster <your-eks-cluster-name> \
+  --cluster eks_cluster \
   --namespace kube-system \
   --name aws-load-balancer-controller \
-  --attach-policy-arn arn:aws:iam::<your-account-id>:policy/AWSLoadBalancerControllerIAMPolicy \
+  --attach-policy-arn arn:aws:iam::943818143857:policy/AWSLoadBalancerControllerIAMPolicy \
+  --region us-east-1 \
   --override-existing-serviceaccounts \
   --approve
 ```
@@ -175,6 +176,7 @@ After completing the above steps, your cluster is fully ready for:
 *   GitHub Actions GitOps pipeline
 
 ***
+
 
 
 
