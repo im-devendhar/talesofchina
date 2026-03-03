@@ -71,7 +71,8 @@ The AWS Load Balancer Controller is required for managing Ingress objects and cr
 
 ```bash
 eksctl utils associate-iam-oidc-provider \
-  --cluster <your-eks-cluster-name> \
+  --cluster eks_cluster \
+  --region us-east-1 \
   --approve
 ```
 
@@ -174,6 +175,7 @@ After completing the above steps, your cluster is fully ready for:
 *   GitHub Actions GitOps pipeline
 
 ***
+
 
 
 
