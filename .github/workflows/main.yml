@@ -44,8 +44,9 @@ jobs:
       - name: Push Docker Image
         run: |
           set -euxo pipefail
-          docker push "$DOCKER_IMAGE:${{ github.sha }}"
-          docker push "$DOCKER_IMAGE:latest"
+          docker push $DOCKER_IMAGE:${{ github.sha }}
+          docker push $DOCKER_IMAGE:${GITHUB_RUN_NUMBER}
+          docker push $DOCKER_IMAGE:latest
 
       - name: Update deployment manifest with image tag (SHA)
         run: |
