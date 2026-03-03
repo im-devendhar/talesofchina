@@ -20,7 +20,6 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      # Optional unless you later use kubectl/aws in this job
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
