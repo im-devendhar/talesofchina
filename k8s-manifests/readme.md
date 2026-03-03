@@ -22,10 +22,22 @@ These steps are executed **one time only**, after EKS and node groups are create
 Install kubectl on your local machine / CloudShell:
 
 ```bash
-curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.30.0/2024-06-18/bin/linux/amd64/kubectl
-chmod +x kubectl
-sudo mv kubectl /usr/local/bin/
+sudo apt-get update
+sudo apt-get install -y ca-certificates curl apt-transport-https
+
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key \
+  | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] \
+https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /" \
+| sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+sudo apt-get update
+sudo apt-get install -y kubectl
+
 kubectl version --client
+
 ```
 
 Configure kubectl to connect to the EKS cluster:
@@ -151,5 +163,6 @@ After completing the above steps, your cluster is fully ready for:
 *   GitHub Actions GitOps pipeline
 
 ***
+
 
 
