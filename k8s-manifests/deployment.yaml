@@ -18,13 +18,7 @@ spec:
       containers:
       - name: talesofchina
         image: devenops641/tales-of-china:64
-        imagePullPolicy: Always   # ensures the latest image is pulled
+        imagePullPolicy: Always   
         ports:
         - containerPort: 80
-        resources:               # optional but recommended
-          limits:
-            cpu: "500m"
-            memory: "256Mi"
-          requests:
-            cpu: "250m"
-            memory: "128Mi"
+       
