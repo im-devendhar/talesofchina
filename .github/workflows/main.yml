@@ -20,7 +20,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      
+      # Optional unless you later use kubectl/aws in this job
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -28,13 +28,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Build Docker Image
+      - name: Build Docker Image (tag: SHA, latest, RUN_NUMBER)
         run: |
           set -euxo pipefail
           cd "$APP_DIR"
-          docker build -t "$DOCKER_IMAGE:${{ github.sha }}" .
-          docker tag "$DOCKER_IMAGE:${{ github.sha }}" "$DOCKER_IMAGE:latest"
-          docker tag "$DOCKER_IMAGE:${{ github.sha }}" "$DOCKER_IMAGE:${GITHUB_RUN_NUMBER}"
+          docker build -t "$DOCKER_IMAGE:${GITHUB_SHA}" .
+          docker tag  "$DOCKER_IMAGE:${GITHUB_SHA}" "$DOCKER_IMAGE:${GITHUB_RUN_NUMBER}"
+          docker tag  "$DOCKER_IMAGE:${GITHUB_SHA}" "$DOCKER_IMAGE:latest"
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
@@ -42,24 +42,30 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Push Docker Image
+      - name: Push Docker Image (SHA, RUN_NUMBER, latest)
         run: |
           set -euxo pipefail
-          docker push $DOCKER_IMAGE:${{ github.sha }}
-          docker push $DOCKER_IMAGE:${GITHUB_RUN_NUMBER}
-          docker push $DOCKER_IMAGE:latest
+          docker push "$DOCKER_IMAGE:${GITHUB_SHA}"
+          docker push "$DOCKER_IMAGE:${GITHUB_RUN_NUMBER}"
+          docker push "$DOCKER_IMAGE:latest"
 
-      - name: Update deployment manifest with image tag (SHA)
+      - name: Update deployment manifest with image tag (Run Number)
         run: |
           set -euxo pipefail
           git config user.email "devenop641@gmail.com"
-          git config user.name "devenops641"
-          BUILD_NUMBER="${GITHUB_RUN_NUMBER}"
-          sed -i "s/replaceImageTag/${IMAGE_TAG}/g" k8s-manifests/deployment.yaml
+          git config user.name  "devenops641"
+
+          BUILD_NUMBER="${GITHUB_RUN_NUMBER}"   # define before use
+
+          # IMPORTANT: Your deployment.yaml must have ...:replaceImageTag as the image tag
+          sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" k8s-manifests/deployment.yaml
+
           git add k8s-manifests/deployment.yaml
           if ! git diff --cached --quiet; then
-            git commit -m "Update deployment image to ${IMAGE_TAG}"
+            git commit -m "Update deployment image to ${BUILD_NUMBER}"
             git push "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" HEAD:main
           else
             echo "No changes detected; skipping commit and push."
           fi
+
+     
