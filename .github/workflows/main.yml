@@ -17,7 +17,10 @@ jobs:
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
+      
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -27,9 +30,10 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          cd $APP_DIR
-          docker build -t $DOCKER_IMAGE:${{ github.sha }} .
-          docker tag $DOCKER_IMAGE:${{ github.sha }} $DOCKER_IMAGE:latest
+          set -euxo pipefail
+          cd "$APP_DIR"
+          docker build -t "$DOCKER_IMAGE:${{ github.sha }}" .
+          docker tag "$DOCKER_IMAGE:${{ github.sha }}" "$DOCKER_IMAGE:latest"
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
@@ -39,15 +43,21 @@ jobs:
 
       - name: Push Docker Image
         run: |
-          docker push $DOCKER_IMAGE:${{ github.sha }}
-          docker push $DOCKER_IMAGE:latest
-      - name: Update deployment manifest with image tag
+          set -euxo pipefail
+          docker push "$DOCKER_IMAGE:${{ github.sha }}"
+          docker push "$DOCKER_IMAGE:latest"
+
+      - name: Update deployment manifest with image tag (SHA)
         run: |
-            git config user.email "devenop641@gmail.com"
-            git config user.name "devenops641"
-            BUILD_NUMBER=${GITHUB_RUN_NUMBER}
-            sed -i "s/replaceImageTag/${BUILD_NUMBER}/g" k8s-manifests/deployment.yaml
-            git add k8s-manifests/deployment.yaml
-            git commit -m "Update deployment image to version ${BUILD_NUMBER}" || echo "No changes to commit"
-            git push https://${{ github.actor }}:${{ secrets.TOKEN }}@github.com/${{ github.repository }} HEAD:main
-   
+          set -euxo pipefail
+          git config user.email "devenop641@gmail.com"
+          git config user.name "devenops641"
+          IMAGE_TAG="${GITHUB_SHA}"
+          sed -i "s/replaceImageTag/${IMAGE_TAG}/g" k8s-manifests/deployment.yaml
+          git add k8s-manifests/deployment.yaml
+          if ! git diff --cached --quiet; then
+            git commit -m "Update deployment image to ${IMAGE_TAG}"
+            git push "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}" HEAD:main
+          else
+            echo "No changes detected; skipping commit and push."
+          fi
