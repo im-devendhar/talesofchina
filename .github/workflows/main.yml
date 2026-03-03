@@ -54,7 +54,7 @@ jobs:
           set -euxo pipefail
           git config user.email "devenop641@gmail.com"
           git config user.name "devenops641"
-          IMAGE_TAG="${GITHUB_SHA}"
+          BUILD_NUMBER="${GITHUB_RUN_NUMBER}"
           sed -i "s/replaceImageTag/${IMAGE_TAG}/g" k8s-manifests/deployment.yaml
           git add k8s-manifests/deployment.yaml
           if ! git diff --cached --quiet; then
