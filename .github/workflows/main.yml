@@ -34,6 +34,7 @@ jobs:
           cd "$APP_DIR"
           docker build -t "$DOCKER_IMAGE:${{ github.sha }}" .
           docker tag "$DOCKER_IMAGE:${{ github.sha }}" "$DOCKER_IMAGE:latest"
+          docker tag "$DOCKER_IMAGE:${{ github.sha }}" "$DOCKER_IMAGE:${GITHUB_RUN_NUMBER}"
 
       - name: Login to DockerHub
         uses: docker/login-action@v3
