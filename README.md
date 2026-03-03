@@ -366,7 +366,6 @@ Cloud-native deployment
 
 # Final Outcome
 
-You have successfully built:
 
 A production-style DevOps pipeline on AWS using:
 
