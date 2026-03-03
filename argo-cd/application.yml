@@ -10,7 +10,7 @@ spec:
     targetRevision: main
     path: k8s-manifests
   destination:
-    server: http://kubernetes.default.svc
+    server: https://kubernetes.default.svc
     namespace: talesofchina
   syncPolicy:
     automated:
