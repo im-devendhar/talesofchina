@@ -71,7 +71,7 @@ The AWS Load Balancer Controller is required for managing Ingress objects and cr
 
 ```bash
 eksctl utils associate-iam-oidc-provider \
-  --cluster eks_cluster \
+  --cluster eks-cluster \
   --region us-east-1 \
   --approve
 ```
@@ -97,7 +97,7 @@ Copy the **Policy ARN** from the output.
 
 ```bash
 eksctl create iamserviceaccount \
-  --cluster eks_cluster \
+  --cluster eks-cluster \
   --namespace kube-system \
   --name aws-load-balancer-controller \
   --attach-policy-arn arn:aws:iam::943818143857:policy/AWSLoadBalancerControllerIAMPolicy \
@@ -123,12 +123,12 @@ helm repo update
 ```bash
 helm upgrade -i aws-load-balancer-controller eks/aws-load-balancer-controller \
   -n kube-system \
-  --set clusterName=<your-eks-cluster-name> \
+  --set clusterName=eks-cluster \
   --set serviceAccount.create=false \
   --set serviceAccount.name=aws-load-balancer-controller \
   --set region=us-east-1 \
   --set vpcId=$(aws eks describe-cluster \
-      --name <your-eks-cluster-name> \
+      --name eks-cluster \
       --query "cluster.resourcesVpcConfig.vpcId" \
       --output text)
 ```
@@ -176,6 +176,7 @@ After completing the above steps, your cluster is fully ready for:
 *   GitHub Actions GitOps pipeline
 
 ***
+
 
 
 
