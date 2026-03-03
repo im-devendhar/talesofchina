@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: talesofchina
-        image: devenops641/tales-of-china:replaceImageTag
+        image: devenops641/tales-of-china:12160a21e5e4c8d928ddf63ec9bde64ffd432e31
         imagePullPolicy: Always   # ensures the latest image is pulled
         ports:
         - containerPort: 80
