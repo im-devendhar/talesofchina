@@ -114,6 +114,12 @@ kubectl apply -f https://raw.githubusercontent.com/aws/eks-charts/master/stable/
 
 ### **Step 6: Install AWS Load Balancer Controller using Helm**
 
+Install helm
+```bash
+curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+helm version
+```
+
 ```bash
 helm repo add eks https://aws.github.io/eks-charts
 helm repo update
@@ -175,6 +181,7 @@ After completing the above steps, your cluster is fully ready for:
 *   GitHub Actions GitOps pipeline
 
 ***
+
 
 
 
