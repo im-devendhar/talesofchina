@@ -40,8 +40,19 @@ kubectl version --client
 
 ```
 
-Configure kubectl to connect to the EKS cluster:
 
+eksctl is required for:
+
+Associating IAM OIDC provider
+Creating service accounts for AWS Load Balancer Controller
+Managing cluster-level resources
+```bash
+curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz"
+tar -xzf eksctl_$(uname -s)_amd64.tar.gz
+sudo mv eksctl /usr/local/bin/
+eksctl version
+```
+Configure kubectl to connect to the EKS cluster:
 ```bash
 aws eks update-kubeconfig \
   --region us-east-1 \
@@ -163,6 +174,7 @@ After completing the above steps, your cluster is fully ready for:
 *   GitHub Actions GitOps pipeline
 
 ***
+
 
 
 
