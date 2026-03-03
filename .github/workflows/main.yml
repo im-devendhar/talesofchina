@@ -41,12 +41,3 @@ jobs:
           docker push $DOCKER_IMAGE:${{ github.sha }}
           docker push $DOCKER_IMAGE:latest
           
-      - name: Installing Argo CD
-        run: |
-         kubectl create namespace argocd || true
-         kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-
-      - name: Wait for Argo CD to be ready
-        run: |
-         kubectl rollout status deployment/argocd-server -n argocd --timeout=300s
-
