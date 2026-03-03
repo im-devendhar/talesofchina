@@ -3,9 +3,50 @@
 ## **Argo CD Application Setup**
 
 ***
+# Install Argo CD
 
-# 📌 Argo CD Application (One-Time Setup)
+```bash
+kubectl delete namespace argocd --ignore-not-found
+kubectl create namespace argocd
 
+kubectl apply -n argocd \
+  -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+kubectl rollout status deployment/argocd-server \
+  -n argocd --timeout=300s
+```
+# Expose Argo CD UI Using LoadBalancer
+```bash
+
+kubectl patch svc argocd-server -n argocd \
+  -p '{"spec": {"type": "LoadBalancer"}}'
+```
+# Get Argo CD UI URL:
+```bash
+kubectl get svc -n argocd argocd-server
+```
+# Get Initial Argo CD Admin Password
+
+```bash
+kubectl -n argocd get secret argocd-initial-admin-secret \
+  -o jsonpath="{.data.password}" | base64 --decode
+```
+
+# Login at
+
+http://<ARGOCD-LOADBALANCER-DNS>
+Username: admin
+Password: <decoded-password>
+
+# Create and Apply Argo CD Application
+```bash
+kubectl apply -f argocd/application.yml -n argocd
+```
+Check status:
+```bash
+kubectl -n argocd get applications
+kubectl -n argocd describe application talesofchina
+```
 The Argo CD Application manifest (`argocd/application.yml`) defines:
 
 *   Which Git repository Argo CD should watch
@@ -14,14 +55,6 @@ The Argo CD Application manifest (`argocd/application.yml`) defines:
 *   Synchronization rules (auto-sync, prune, self-heal)
 *   Whether the namespace should be created automatically
 
-Argo CD **does not automatically read this file from the Git repository**.  
-It must be **applied once** to the Kubernetes cluster.
-
-### **📍 One-time command to create the Argo CD Application**
-
-```bash
-kubectl apply -f argocd/application.yml -n argocd 
-```
 
 This creates a Kubernetes resource:
 
@@ -48,32 +81,6 @@ You **do NOT** need to apply `application.yml` again.
 You only apply it once so Argo CD knows where your application lives.
 
 ***
-
-# Why this is done only once
-
-The Argo CD Application is a Kubernetes object.  
-Once created, Argo CD stores it inside the cluster and uses it continuously.
-
-Applying it again on every pipeline run is:
-
-*   Not required
-*   Not recommended
-*   Can cause unnecessary overrides
-
-***
-
-# Optional (if using GitHub Actions)
-
-If you prefer to apply it from GitHub Actions instead of local machine, you can temporarily add:
-
-```yaml
-- name: Create Argo CD application
-  run: |
-    kubectl apply -f argocd/application.yml -n argocd
-```
-
-Run the pipeline once → Argo CD Application gets created.  
-Then remove this step.
 
 ***
 
