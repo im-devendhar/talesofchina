@@ -138,6 +138,12 @@ helm upgrade -i aws-load-balancer-controller eks/aws-load-balancer-controller \
       --output text)
 ```
 
+### **Step 7: Install Argo Cd**
+```bash
+    kubectl create namespace argocd
+    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+    kubectl rollout status deployment/argocd-server -n argocd --timeout=300s
+```
 ### **Step 7: Verify Installation**
 
 ```bash

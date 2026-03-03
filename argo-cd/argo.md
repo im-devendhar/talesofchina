@@ -20,7 +20,7 @@ It must be **applied once** to the Kubernetes cluster.
 ### **📍 One-time command to create the Argo CD Application**
 
 ```bash
-kubectl apply -f argocd/application.yml -n argocd
+kubectl apply -f argocd/application.yml -n argocd 
 ```
 
 This creates a Kubernetes resource:
