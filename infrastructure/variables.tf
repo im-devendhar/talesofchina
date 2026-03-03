@@ -4,7 +4,7 @@ variable "region"{
 }
 
 variable "cluster_name"{
-    default = "eks_cluster"
+    default = "eks-cluster"
 }
 
 variable "instance_type"{
