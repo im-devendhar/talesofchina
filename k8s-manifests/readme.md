@@ -56,7 +56,7 @@ Configure kubectl to connect to the EKS cluster:
 ```bash
 aws eks update-kubeconfig \
   --region us-east-1 \
-  --name <your-eks-cluster-name>
+  --name eks-cluster
 ```
 
 This allows your system to communicate with the EKS cluster.
@@ -187,6 +187,7 @@ After completing the above steps, your cluster is fully ready for:
 *   GitHub Actions GitOps pipeline
 
 ***
+
 
 
 
